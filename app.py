@@ -2,14 +2,13 @@ from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
-#  Create a Flask app instance
+#  Shk- Create a Flask app instance
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
-#  Move db initialization outside app_context()
-
+#  Shk- Move db initialization outside app_context()
 with app.app_context():
     db = SQLAlchemy(app)
 
@@ -22,7 +21,7 @@ class Todo(db.Model):
     def __repr__(self) -> str:
         return f"{self.sno} - {self.title}"
 
-# Add message
+# Shk- Add message
 @app.route("/", methods=['GET', 'POST'])
 def add_msg():
     if request.method=='POST':
@@ -36,12 +35,12 @@ def add_msg():
     return render_template("index.html", allTodo=allTodo)
 
 @app.route("/show")
-def show(): #  Show all todo
+def show(): #  Shk- Show all todo
     allTodo = Todo.query.all()
     print(allTodo)
     
 @app.route("/update/<int:sno>", methods=['GET', 'POST'])
-def update(sno): #  Update the todo
+def update(sno): #  Shk- Update the todo
     if request.method=='POST':
         title = request.form['title']
         desc = request.form['desc']
@@ -56,13 +55,13 @@ def update(sno): #  Update the todo
     return render_template("update.html", todo=todo)
     
 @app.route("/delete/<int:sno>")
-def delete(sno): #  Delete the todo
+def delete(sno): #  Shk- Delete the todo
     todo = Todo.query.filter_by(sno=sno).first()
     db.session.delete(todo)
     db.session.commit()
     return redirect("/")
 
-#  Create database inside application context
+#  Shk- Create database inside application context
 with app.app_context():
     db.create_all()
     print("Database successfully!")
